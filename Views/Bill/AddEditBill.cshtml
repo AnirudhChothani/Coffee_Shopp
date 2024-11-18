@@ -1,0 +1,61 @@
+﻿@model BillModel
+
+@{
+    string title = Model?.BillID == null ? "Insert Product" : "Update Product";
+    ViewData["Title"] = title;
+    string buttonLabel = Model?.BillID == null ? "Insert" : "Update";
+}
+<h2 class="mt-3 mb-3">@ViewData["Title"]</h2> 
+<form method="post" asp-action="SaveBill" class="row g-3">
+    <input type="hidden" asp-for="BillID" />
+    <div class="mb-3">
+        <label for="BillNumber" class="form-label">Bill Number<span class="text-danger">*</span></label>
+        <input type="datetime" asp-for="BillNumber" class="form-control" id="BillNumber" name="BillNumber" placeholder="Bill Number" />
+        <span asp-validation-for="BillNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="BillDate" class="form-label">Bill Date<span class="text-danger">*</span></label>
+        <input type="datetime-local" asp-for="BillDate" class="form-control" id="BillDate" name="BillDate" />
+        <span asp-validation-for="BillDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="OrderID" class="form-label">Customer Name<span class="text-danger">*</span></label>
+        <select asp-for="OrderID" class="form-control" asp-items="@(new SelectList(@ViewBag.Order,"OrderID","CustomerName"))">
+            <option disabled="disabled" selected>-- Select Order --</option>
+        </select>
+        <span asp-validation-for="OrderID" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="TotalAmount" class="form-label">Total Amount<span class="text-danger">*</span></label>
+        <input type="number" asp-for="TotalAmount" class="form-control" id="TotalAmount" name="TotalAmount" placeholder="Total Amount" />
+        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Discount" class="form-label">Discount<span class="text-danger">*</span></label>
+        <input type="number" asp-for="Discount" class="form-control" id="Discount" name="Discount" placeholder="Discount" />
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="NetAmount" class="form-label">Net Amount<span class="text-danger">*</span></label>
+        <input type="number" asp-for="NetAmount" class="form-control" id="NetAmount" name="NetAmount" placeholder="Net Amount" />
+        <span asp-validation-for="NetAmount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="userID" class="form-label">User<span class="text-danger">*</span></label>
+        <select asp-for="UserID" class="form-control" id="userID" asp-items="@(new SelectList(@ViewBag.User,"UserID","UserName"))">
+            <option disabled="disabled" selected>-- Select User --</option>
+        </select>
+        <span asp-validation-for="UserID" class="text-danger"></span>
+    </div>
+    <div class="text-start">
+        <button type="submit" class="btn btn-primary">@buttonLabel</button>
+        <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("Bill", "Bill")'">Cancel</button>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

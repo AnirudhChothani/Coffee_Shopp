@@ -1,0 +1,78 @@
+﻿@using System.Data
+
+@{
+    ViewData["Title"] = "Bill";
+}
+
+<div class="d-flex justify-content-between">
+    <a class="btn btn-primary mt-3 mb-3" asp-action="AddEditBill" asp-controller="Bill">Add Bill</a>
+</div>
+
+@if (TempData["delete"] != null)
+{
+    <div class="alert alert-danger alert-dismissible">
+        <span class="text-danger">
+            @TempData["delete"]
+        </span>
+    </div>
+}
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <span class="text-danger">
+            @TempData["success"]
+        </span>
+    </div>
+}
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Bill ID</th>
+            <th scope="col">Bill Number</th>
+            <th scope="col">Bill Date</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Net Amount</th>
+            <th scope="col">User ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (DataRow bills in Model.Rows)
+            {
+                <tr>
+                    <th scope="row">@bills["BillID"]</th>
+                    <td>@bills["BillNumber"]</td>
+                    <td>@bills["BillDate"]</td>
+                    <td>@bills["CustomerName"]</td>
+                    <td>@bills["TotalAmount"]</td>
+                    <td>@bills["Discount"]</td>
+                    <td>@bills["NetAmount"]</td>
+                    <td>@bills["UserID"]</td>
+                    <td>
+                        <!-- Edit button -->
+                        <form method="post" asp-controller="Bill" asp-action="AddEditBill" style="display:inline;">
+                            <input type="hidden" name="BillID" value="@bills["BillID"]" />
+                            <button class="btn btn-success">Edit</button>
+                        </form>
+                        <!-- Delete button -->
+                        <form method="post" asp-controller="Bill" asp-action="DeleteBill" style="display:inline;">
+                            <input type="hidden" name="BillID" value="@bills["BillID"]" />
+                            <button class="btn btn-danger" type="submit" onclick="return confirmDelete()">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this Bill?");
+    }
+</script>

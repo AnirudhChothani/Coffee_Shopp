@@ -1,0 +1,55 @@
+﻿@model UserModel
+
+@{
+    string title = Model?.UserID == null ? "Insert Product" : "Update Product";
+    ViewData["Title"] = title;
+    string buttonLabel = Model?.UserID == null ? "Insert" : "Update";
+}
+<h2 class="mt-3 mb-3">@ViewData["Title"]</h2>
+<form asp-action="UserSave">
+    <input type="hidden" asp-for="UserID" />
+    <div class="mb-3">
+        <label class="form-label">User Name</label>
+        <input type="text" asp-for="UserName" class="form-control" placeholder="User Name">
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" asp-for="Email" class="form-control" placeholder="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="text" asp-for="Password" class="form-control" placeholder="Password">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mobile No</label>
+        <input type="text" asp-for="MobileNo" class="form-control" placeholder="Mobile No.">
+        <span asp-validation-for="MobileNo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input type="text" asp-for="Address" class="form-control" placeholder="Address">
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label for="IsActive" class="form-label">Is Active</label>
+        <select asp-for="IsActive" class="form-control" id="userID">
+            <option disabled="disabled" selected>-- Active Status --</option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">@buttonLabel</button>
+        <button type="button" class="btn btn-danger" onclick="window.location.href='@Url.Action("User", "User")'">Cancel</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

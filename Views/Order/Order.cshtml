@@ -1,0 +1,75 @@
+﻿@using System.Data;
+
+@{
+    ViewData["Title"] = "Order";
+}
+
+<div class="d-flex justify-content-between">
+    <a class="btn btn-primary mt-3 mb-3" asp-action="AddEditOrder" asp-controller="Order">Add Order</a>
+</div>
+
+@if (TempData["delete"] != null)
+{
+    <div class="alert alert-danger alert-dismissible">
+        <span class="text-danger">
+            @TempData["delete"]
+        </span>
+    </div>
+}
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <span class="text-danger">
+            @TempData["success"]
+        </span>
+    </div>
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Payment Mode</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Shipping Address</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (DataRow orders in Model.Rows)
+            {
+                <tr>
+                    <th scope="row">@orders["OrderID"]</th>
+                    <td>@orders["OrderDate"]</td>
+                    <td>@orders["CustomerName"]</td>
+                    <td>@orders["PaymentMode"]</td>
+                    <td>@orders["TotalAmount"]</td>
+                    <td>@orders["ShippingAddress"]</td>
+                    <td>@orders["UserName"]</td>
+                    <td>
+                        <!-- Edit button -->
+                        <form method="post" asp-controller="Order" asp-action="AddEditOrder" style="display:inline;">
+                            <input type="hidden" name="OrderID" value="@orders["OrderID"]" />
+                            <button class="btn btn-success">Edit</button>
+                        </form>
+                        <!-- Delete button -->
+                        <form method="post" asp-controller="Order" asp-action="DeleteOrder" style="display:inline;">
+                            <input type="hidden" name="OrderID" value="@orders["OrderID"]" />
+                            <button class="btn btn-danger" type="submit" onclick="return confirmDelete()">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this Order?");
+    }
+</script>
